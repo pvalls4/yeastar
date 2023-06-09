@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inicio de Sesión</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form class="text-center" id="formLogin" method="POST">
+        {% csrf_token %}
+        
+        <div class="p-2">{{ form.as_p }}</div>
+
+            <input class="rounded-lg p-1 bg-[#461f87] text-[#ededed]" type="submit" href="dashboard" name="submit" value="Log In">
+    </form>
+    <a href="dashboard">marica</a>
+</body>
+</html>

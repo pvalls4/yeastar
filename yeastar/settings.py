@@ -136,3 +136,4 @@ LOGIN_URL= "/login/"
 LOGIN_REDIRECT_URL = '/dashboard'
 
 AUTH_AUTHENTICATION_TYPE='name'
+AUTH_USER_MODEL = 'yeastarieti.User'

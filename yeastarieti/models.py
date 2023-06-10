@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     # Añade los campos adicionales que deseas
     max_sms = models.PositiveIntegerField(default=0)
+    current_sms = models.PositiveIntegerField(default=0)
     phone = models.CharField(max_length=9, blank=True)
     department = models.CharField(max_length=100, blank=True)
 

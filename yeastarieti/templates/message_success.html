@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>MENSAJE ENVIADO CORRECTAMENTE</h2>
+    <p>Bienvenido, {{user}}, te quedan {{ remain_sms }} de un total de {{ user.max_sms }} mensajes por mandar el día de hoy.</p>
+
+    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/dashboard'">Volver al dashboard</button>
+    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/sendsms'">Enviar otro mensaje</button>
+    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
+{% endblock %}

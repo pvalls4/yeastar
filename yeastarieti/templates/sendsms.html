@@ -3,7 +3,17 @@
 {% block content %}
 
     <h2>ENVIAR SMS</h2>
-    <p>{{user}}</p>
-   
+    {% if user.current_sms < user.max_sms %}
+        <p>Bienvenido, {{user}}, te quedan {{ remain_sms }} de un total de {{ user.max_sms }} mensajes por mandar el día de hoy.</p>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enviar</button>
+        </form>
+    {% else %}
+        <p>{{user}}, ya no te quedan más mensajes por hoy. Alcanzaste tu límite, {{ user.max_sms }}</p>>
+    {% endif %}
+    
+    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/dashboard'">Volver al dashboard</button>
     <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
 {% endblock %}

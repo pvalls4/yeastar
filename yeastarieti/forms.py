@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from .models import *
 # from .models import CustomUser
 
 # class CustomUserCreationForm(UserCreationForm):
@@ -18,3 +19,8 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'mb-4 mt-4 ml-[1.4%]'}))
     password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password'}))
 # myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['text', 'receiver']

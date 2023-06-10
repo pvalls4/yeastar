@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm
@@ -47,6 +48,10 @@ class LoginView(auth_views.LoginView):
 	form_class = LoginForm
 	authentication_form = MyAuthForm
 	template_name = 'login.html'
+        
+def logout_view(request):
+	logout(request)
+	return render(request, "logout.html")
 # Create your views here.
 
 def home(request):
@@ -61,6 +66,13 @@ def dashboard(request):
     user = request.user.username
     content = {
         'nombre': user,
-        'edad': 30,
     }
     return render(request, 'dashboard.html', content)
+
+@login_required
+def sendsms(request):
+    user =User.objects.get(pk=request.user.pk)
+    content = {
+        'user': user,
+    }
+    return render(request, 'sendsms.html', content)

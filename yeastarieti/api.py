@@ -55,3 +55,19 @@ def login(request):
          _token = 'null'
     
     return JsonResponse({"status":_status,"message":_message,"token":_token  })
+
+@api_view(['GET'])
+def logout(request):
+    try:
+        token = (request.GET['token'])
+    except:
+        token = "null"
+    verifica = verifyToken(token)
+    if (verifica):
+        _status = "OK"
+        _message = "Session succesfully closed."
+    else:        
+        _status = "ERROR"
+        _message = "session_token is required"
+   
+    return JsonResponse({'status': _status, "message":_message})

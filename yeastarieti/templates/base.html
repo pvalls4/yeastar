@@ -8,17 +8,18 @@
 <body>
     <header>
         <div class="flex justify-around">
-            <div class="flex items-center">
-                <a href="/dashboard"><img src="{% static 'logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
-                <h1>IETI Message Center</h1>
+            <div class="flex flex-col justify-center items-center">
+                <a href="/"><img src="{% static 'logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
+                <h1 class="text-sky-800 font-bold">IETI Message Center</h1>
             </div>
             <img src="{% static 'cabecera_web.jpg' %}" alt="Cabecera" class="h-[170px] w-[1000px]">
-            <div class="flex items-center"></div>
-                {% if user %}
-                    <p>Benvingut, {{ user }}</p>
-                    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
+            <div class="flex flex-col justify-center items-center">
+                {% if user.is_authenticated %}
+                    <p class="mb-[15px] text-blue-800 font-bold">Bienvenido, {{ user }}</p>
+                    <button class="rounded-lg p-2 bg-blue-800 w-[120px] h-[40px] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
                 {% else %}
-                    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/login'">Iniciar sesión</button>
+                    <p class="mb-[15px] text-blue-800 font-bold">No has iniciado sesión</p>
+                    <button class="rounded-lg p-2 bg-blue-800 w-[120px] h-[40px] text-[#ededed]" onclick="location.href='/login'">Iniciar sesión</button>
                 {% endif %}
             </div>
 
@@ -26,7 +27,7 @@
 
     </header>
 
-    <main>
+    <main class="bg-blue-800 text-white">
         {% block content %}
         {% endblock %}
     </main>

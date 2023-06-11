@@ -16,11 +16,19 @@ from .models import *
 #         fields = ('username', 'email')
         
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'mb-4 mt-4 ml-[1.4%]'}))
-    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password'}))
+    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 text-blue-800 rounded-md'}))
+    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'p-0.5 text-blue-800 rounded-md'}))
 # myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
 
 class MessageForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe tu SMS aquí...'}))
+    receiver = forms.CharField(widget=forms.TextInput(attrs={'type': 'number', 'max_length':'9','class': 'p-0.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe el número destino.'}))
+    
+    def clean_my_field(self):
+        data = self.cleaned_data['receiver']
+        if len(data) != 9:
+            raise forms.ValidationError("El campo debe tener una longitud de 9 carácteres.")
+        return data
     class Meta:
         model = Message
         fields = ['text', 'receiver']

@@ -139,7 +139,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL= "/login/"
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_REDIRECT_URL = '/'
 
 AUTH_AUTHENTICATION_TYPE='name'
 AUTH_USER_MODEL = 'yeastarieti.User'

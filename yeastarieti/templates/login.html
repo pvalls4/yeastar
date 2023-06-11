@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inicio de Sesión</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <form class="text-center" id="formLogin" method="POST">
         {% csrf_token %}
         
-        <div class="p-2">{{ form.as_p }}</div>
+        <div class="p-5 font-bold">
+            <h2 class="text-xl">IETI Message Center</h2>
+            {{ form.as_p }}
+        </div>
 
-            <input class="rounded-lg p-1 bg-[#461f87] text-[#ededed]" type="submit" name="submit" value="Log In">
+        <input class="rounded-lg p-2 bg-white text-blue-800 mb-5 font-bold" type="submit" name="submit" value="Iniciar sesión">
     </form>
-</body>
-</html>
+    {% endblock %}

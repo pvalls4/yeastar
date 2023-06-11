@@ -2,10 +2,28 @@
 <html>
 <head>
     <title>IETI Message Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
 </head>
 <body>
     <header>
-        <h1>Encabezado</h1>
+        <div class="flex justify-around">
+            <div class="flex items-center">
+                <a href="/dashboard"><img src="{% static 'logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
+                <h1>IETI Message Center</h1>
+            </div>
+            <img src="{% static 'cabecera_web.jpg' %}" alt="Cabecera" class="h-[170px] w-[1000px]">
+            <div class="flex items-center"></div>
+                {% if user %}
+                    <p>Benvingut, {{ user }}</p>
+                    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
+                {% else %}
+                    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/login'">Iniciar sesión</button>
+                {% endif %}
+            </div>
+
+        </div>
+
     </header>
 
     <main>

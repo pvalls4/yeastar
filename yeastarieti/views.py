@@ -42,6 +42,16 @@ def logout_view(request):
 	return render(request, "logout.html")
 # Create your views here.
 
+def create_user(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/login')  # Redirecciona al inicio de sesión después de crear el usuario
+    else:
+        form = CreateUserForm()
+    return render(request, 'create_user.html', {'form': form})
+
 def home(request):
     content = {
         'nombre': 'John',
@@ -51,9 +61,9 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    user = request.user.username
+    user = request.user
     content = {
-        'nombre': user,
+        'user': user,
     }
     return render(request, 'dashboard.html', content)
 

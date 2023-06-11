@@ -2,8 +2,11 @@
 
 {% block content %}
 
-    <h2>Bienvenido a IETI Message Center, {{ nombre }}</h2>
+    <h2>Bienvenido a IETI Message Center, {{ user }}</h2>
     <p>Contenido de la página de inicio...</p>
     <button onclick="location.href='/sendsms'">Enviar SMS</button>
+    {% if user.is_staff or user.is_superuser %}
+        <button onclick="location.href='/createuser'">Crear usuario</button>
+    {% endif %}
     <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
 {% endblock %}

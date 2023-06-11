@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('sendsms', views.sendsms, name='sendsms'),
     path('message_success/', views.message_success, name='message_success'),
+    path('createuser/', views.create_user, name='create_user'),
     path('api/login/',api.login),
     path('api/logout',api.logout),
     path('api/sendsms', views.api_sendsms, name='api_sendsms'),

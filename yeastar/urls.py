@@ -29,4 +29,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),
     path('accounts/', include('django.contrib.auth.urls')), # new
+    path("__reload__/", include("django_browser_reload.urls")),
 ]

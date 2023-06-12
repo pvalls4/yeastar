@@ -1,0 +1,20 @@
+
+<div>
+    <p class="font-bold text-xl mt-4">Panel de Administrador:</p>
+    {% if user.is_staff or user.is_superuser %}
+        <ul class="list-disc text-blue-800 font-bold">
+            <li class="bg-slate-300 rounded-lg my-1.5">
+                <a href="/admin" class="block px-3 py-1">
+                    Panel Admin Django
+                </a>
+            </li>
+            <li class="bg-blue-300 rounded-lg my-1.5">
+                <a href="/createuser" class="block px-3 py-1">
+                    Crear usuario
+                </a>
+            </li>
+        </ul>
+    {% else %}
+        <p class="px-3 py-1 text-blue-800 font-bold bg-slate-300 rounded-lg my-1.5">No eres Administrador</p>
+    {% endif %}
+</div>

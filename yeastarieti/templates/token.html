@@ -11,7 +11,7 @@
                 {% csrf_token %}
                 <div class="flex my-2">
                     <p>Token actual:</p><p class="ml-2 font-normal hover:cursor-pointer" id="token" onclick="tokenReveal()">Pulsa para desvelar el token</p>
-                    <p id="copy-button"><img src="{% static 'clipboard.png' %}" class="ml-3 Lw-[25px] h-[25px] p-1 rounded-lg bg-slate-300 hover:cursor-pointer" alt="Copiar" title="Copiar en el portapapeles"></p>
+                    <p id="copy-button"><img src="{% static 'images/clipboard.png' %}" class="ml-3 Lw-[25px] h-[25px] p-1 rounded-lg bg-slate-300 hover:cursor-pointer" alt="Copiar" title="Copiar en el portapapeles"></p>
                 </div>
                 <button type="submit" class=" bg-slate-300 text-blue-800 p-0.5 px-1.5 font-bold rounded-lg">Generar nuevo token</button>
             </form>
@@ -53,7 +53,7 @@
     
           // Mostrar una notificación o mensaje de éxito
           var originalImage = this.querySelector("img").src;
-            var tickImage = "{% static 'tick.png' %}";
+            var tickImage = "{% static 'images/tick.png' %}";
             this.querySelector("img").src = tickImage;
             this.querySelector("img").alt = "Copiado";
             this.title = "Copiado en el portapapeles";

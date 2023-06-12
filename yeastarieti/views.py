@@ -78,9 +78,19 @@ def create_user(request):
 @login_required
 def dashboard(request):
     user = User.objects.get(pk=request.user.pk)
+    contacts = Contact.objects.filter(user=user)
+
+    form = MessageForm(user=user)
+    remain_sms = user.max_sms - user.current_sms
+    content = {
+        'user': user,
+        'remain_sms' : remain_sms,
+        'contacts': contacts,
+        'form' : form
+    }
     if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid() and user.current_sms<user.max_sms:
+        form = MessageForm(user=request.user, data=request.POST)
+        if form.is_valid() and (user.current_sms < user.max_sms):
             try: 
                 # Obtener los datos del formulario
                 receiver = form.cleaned_data['receiver']
@@ -115,11 +125,12 @@ def dashboard(request):
                 error_message = f"Error de conexión: {str(e)}"
                 return redirect('message_failure.html')
     else:
-        form = MessageForm()
+        form = MessageForm(user=user)
         remain_sms = user.max_sms - user.current_sms
         content = {
             'user': user,
             'remain_sms' : remain_sms,
+            'contacts': contacts,
             'form' : form
         }
     return render(request, 'dashboard.html', content)

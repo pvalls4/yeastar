@@ -23,17 +23,17 @@ class LoginForm(AuthenticationForm):
 # myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
 
 class MessageForm(forms.ModelForm):
-    text = forms.CharField(label='Mensaje', widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe tu SMS aquí...'}))
-    receiver = forms.CharField(label='Destinatario', max_length="9", widget=forms.TextInput(attrs={'type': 'number','class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe el número destino.'}))
-    
-    def clean_my_field(self):
-        data = self.cleaned_data['receiver']
-        if len(data) != 9:
-            raise forms.ValidationError("El campo debe tener una longitud de 9 carácteres.")
-        return data
+    text = forms.CharField(widget=forms.TextInput(attrs={'class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe tu SMS aquí...'}))
+    receiver = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'number','class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe el número destino.'}))
+    contact = forms.ModelChoiceField(label="Contacto", queryset=None, widget=forms.HiddenInput())
+#validators=[MinLengthValidator(9), MaxLengthValidator(9)]
     class Meta:
         model = Message
-        fields = ['text', 'receiver']
+        fields = ['text', 'receiver', 'contact']
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['contact'].queryset = Contact.objects.filter(user=user)
 
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField(label="E-Mail", max_length=254, widget=forms.EmailInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Correo electrónico', 'title': 'Ingrese una dirección de correo válida.'}))

@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% block content %}
+<script>
+    function showContactsDropdown() {
+        var dropdown = document.getElementById("contactsDropdown");
+        dropdown.classList.toggle("hidden");
+    }
+
+    function fillReceiver(number) {
+        var receiverInput = document.getElementById("id_receiver");
+        receiverInput.value = number;
+    }
+</script>
 <div class="flex justify-around">
     {% include 'sites.html' %}
 
@@ -10,8 +22,17 @@
         <p class="mb-3 mt-1">Bienvenido, {{user}}, te quedan <b>{{ remain_sms }}</b> de un total de <b>{{ user.max_sms }}</b> mensajes por mandar el día de hoy.</p>
         <form class="font-bold" method="POST" action="">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button  class=" font-bold rounded-lg p-0.5 px-1 bg-white text-blue-800 mt-3 mb-10" type="submit">Enviar SMS</button>
+            <p>Mensaje:</p><p>{{ form.text }}</p>
+            <div class="relative">
+                <p class="mt-3">Destinatario:</p><p>{{ form.receiver }}</p>
+                <img src="{% static 'images/agenda.png' %}" alt="Agenda" class="mt-3 h-5 w-5 top-2 right-2 cursor-pointer" onclick="showContactsDropdown()">
+                <div id="contactsDropdown" class="hidden bg-slate-300 mt-1 p-2 shadow-md rounded-md">
+                    {% for contact in form.contact.field.queryset %}
+                        <p class="px-2 rounded-lg cursor-pointer text-blue-800 hover:bg-slate-400" onclick="fillReceiver('{{ contact.num_contact }}')">{{ contact.contact }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="font-bold rounded-lg p-0.5 px-1 bg-white text-blue-800 mt-3 mb-10" type="submit">Enviar SMS</button>
         </form>
         {% else %}
             <p>{{user}}, ya no te quedan más mensajes por hoy. Alcanzaste tu límite, {{ user.max_sms }}</p>>

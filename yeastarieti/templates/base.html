@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
     <title>IETI Message Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    {% load static %}
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
     <header>
         <div class="flex justify-around">
             <div class="flex flex-col justify-center items-center">
-                <a href="/"><img src="{% static 'logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
+                <a href="/"><img src="{% static 'images/logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
                 <h1 class="text-sky-800 font-bold">IETI Message Center</h1>
             </div>
-            <img src="{% static 'cabecera_web.jpg' %}" alt="Cabecera" class="h-[170px] w-[1000px]">
+            <img src="{% static 'images/cabecera_web.jpg' %}" alt="Cabecera" class="h-[170px] w-[1000px]">
             <div class="flex flex-col justify-center items-center font-bold">
                 {% if user.is_authenticated %}
                     <p class="mb-[15px] text-blue-800 font-bold">Bienvenido, {{ user }}</p>

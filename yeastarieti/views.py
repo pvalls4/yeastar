@@ -126,7 +126,7 @@ def dashboard(request):
 
 def api_sendsms(request):
     username = request.GET.get('username')
-    password = request.GET.get('password')
+    api_token = request.GET.get('token')
     text = request.GET.get('text')
     receiver = request.GET.get('receiver')
 
@@ -134,7 +134,7 @@ def api_sendsms(request):
     encoded_text = quote(text)
 
     # Verificar si el usuario y la contraseña son válidos
-    user = authenticate(username=username, password=password)
+    user = authenticate(username=username, api_token=api_token)
     if user is None:
         return HttpResponse('Credenciales inválidas', status=401)
 

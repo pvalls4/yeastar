@@ -18,8 +18,8 @@ from .models import *
 #         fields = ('username', 'email')
         
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 text-blue-800 rounded-md'}))
-    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'p-0.5 text-blue-800 rounded-md'}))
+    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 px-1 text-blue-800 rounded-md'}))
+    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'p-0.5 px-1 text-blue-800 rounded-md'}))
 # myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
 
 class MessageForm(forms.ModelForm):

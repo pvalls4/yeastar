@@ -121,44 +121,6 @@ def dashboard(request):
             'form' : form
         }
     return render(request, 'dashboard.html', content)
-    
-
-@login_required
-def sendsms(request):
-    user = User.objects.get(pk=request.user.pk)
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid() and user.current_sms<user.max_sms:
-            message = form.save(commit=False)
-            message.sender = request.user
-            message.save()
-            user = request.user
-            user.current_sms += 1
-            user.save()
-            # Obtener los datos del formulario
-            receiver = form.cleaned_data['receiver']
-            text = form.cleaned_data['text']
-
-            # Codificar el texto en URL Encode
-            encoded_text = quote(text)
-
-            # Construir la URL de la API de Yeastar con los datos del formulario
-            api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password=Projectieti23&port=1&destination=34{receiver}&content={encoded_text}"
-
-            # Enviar la solicitud a la API de Yeastar
-            response = requests.get(api_url)
-            print("Testing")
-            print(response)
-            return redirect('message_success')  # Redirecciona a la página de éxito después de enviar el formulario
-    else:
-        form = MessageForm()
-        remain_sms = user.max_sms - user.current_sms
-        content = {
-            'user': user,
-            'remain_sms' : remain_sms,
-            'form' : form
-        }
-    return render(request, 'sendsms.html', content)
 
 def api_sendsms(request):
     username = request.GET.get('username')
@@ -201,3 +163,12 @@ def message_success(request):
         'remain_sms' : remain_sms,
     }
     return render(request, 'message_success.html', content)
+
+@login_required
+def token(request):
+    user = request.user
+
+    content = {
+        'user': user,
+    }
+    return render(request, 'token.html', content)

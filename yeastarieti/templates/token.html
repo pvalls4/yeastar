@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="flex justify-around">
+        {% include 'sites.html' %}
+
+        <div>
+            <form class="text-center" id="formLogin" method="POST">
+                {% csrf_token %}
+                
+                <div class="p-5 font-bold">
+                    <h2 class="text-xl">Opciones de mi API Token:</h2>
+                    {{ form.as_p }}
+                </div>
+
+                <button class=" font-bold rounded-lg p-0.5 bg-white text-blue-800 mt-2 mb-10" type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+        
+        {% include 'admin_panel.html' %}
+    </div>
+{% endblock %}

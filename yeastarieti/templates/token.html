@@ -1,22 +1,69 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% block content %}
     <div class="flex justify-around">
         {% include 'sites.html' %}
-
-        <div>
-            <form class="text-center" id="formLogin" method="POST">
+            
+        <div class="p-5 font-bold">
+            <h2 class="text-xl">Opciones de mi API Token:</h2>
+            <form method="post">
                 {% csrf_token %}
-                
-                <div class="p-5 font-bold">
-                    <h2 class="text-xl">Opciones de mi API Token:</h2>
-                    {{ form.as_p }}
+                <div class="flex my-2">
+                    <p>Token actual:</p><p class="ml-2 font-normal hover:cursor-pointer" id="token" onclick="tokenReveal()">Pulsa para desvelar el token</p>
+                    <p id="copy-button"><img src="{% static 'clipboard.png' %}" class="ml-3 Lw-[25px] h-[25px] p-1 rounded-lg bg-slate-300 hover:cursor-pointer" alt="Copiar" title="Copiar en el portapapeles"></p>
                 </div>
-
-                <button class=" font-bold rounded-lg p-0.5 bg-white text-blue-800 mt-2 mb-10" type="submit">Iniciar sesión</button>
+                <button type="submit" class=" bg-slate-300 text-blue-800 p-0.5 px-1.5 font-bold rounded-lg">Generar nuevo token</button>
             </form>
         </div>
         
         {% include 'admin_panel.html' %}
     </div>
+    <script>
+        function tokenReveal() {
+            var parrafo = document.getElementById("token");
+            parrafo.textContent = "{{ user.api_token }}";
+            parrafo.onclick = function() {tokenHide();}
+        }
+        function tokenHide() {
+            var parrafo = document.getElementById("token");
+            parrafo.textContent = "Pulsa para desvelar el token";
+            parrafo.onclick = function() {tokenReveal();}
+        }
+
+        document.getElementById("copy-button").addEventListener("click", function() {
+          // Obtener el token actual
+          var token = "{{ user.api_token }}";
+    
+          // Crear un elemento de texto temporal
+          var tempInput = document.createElement("input");
+          tempInput.type = "text";
+          tempInput.value = token;
+          document.body.appendChild(tempInput);
+    
+          // Seleccionar el texto del input temporal
+          tempInput.select();
+          tempInput.setSelectionRange(0, 99999); // Para dispositivos móviles
+    
+          // Copiar el texto al portapapeles
+          document.execCommand("copy");
+    
+          // Eliminar el input temporal
+          document.body.removeChild(tempInput);
+    
+          // Mostrar una notificación o mensaje de éxito
+          var originalImage = this.querySelector("img").src;
+            var tickImage = "{% static 'tick.png' %}";
+            this.querySelector("img").src = tickImage;
+            this.querySelector("img").alt = "Copiado";
+            this.title = "Copiado en el portapapeles";
+
+            setTimeout(function() {
+                // Restaurar la imagen original después de 2 segundos
+                this.querySelector("img").src = originalImage;
+                this.querySelector("img").alt = "Copiar";
+                this.title = "Copiar en el portapapeles";
+            }.bind(this), 1500);
+        });
+      </script>
 {% endblock %}

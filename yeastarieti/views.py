@@ -24,6 +24,8 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 
+from django.utils.crypto import get_random_string
+
 #class MyAuthForm(AuthenticationForm):
 #	error_messages = {
 #		'invalid_login': (
@@ -167,8 +169,15 @@ def message_success(request):
 @login_required
 def token(request):
     user = request.user
-
     content = {
-        'user': user,
+        'user': user
     }
-    return render(request, 'token.html', content)
+    if request.method == 'POST':
+        # Generar un nuevo token
+        new_token = get_random_string(length=64)
+        user.api_token = new_token
+        user.save()
+        messages.success(request, 'El token API se ha cambiado exitosamente.')
+        return redirect('/token')  # Redirecciona a la página de opciones de token
+    else:
+        return render(request, 'token.html', content)

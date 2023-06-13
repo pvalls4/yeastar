@@ -2,17 +2,8 @@
 
 {% load static %}
 {% block content %}
-<script>
-    function showContactsDropdown() {
-        var dropdown = document.getElementById("contactsDropdown");
-        dropdown.classList.toggle("hidden");
-    }
+<script src="{% static 'scripts/dashboard.js' %}"></script>
 
-    function fillReceiver(number) {
-        var receiverInput = document.getElementById("id_receiver");
-        receiverInput.value = number;
-    }
-</script>
 <div class="flex justify-around">
     {% include 'sites.html' %}
 
@@ -25,7 +16,7 @@
             <p>Mensaje:</p><p>{{ form.text }}</p>
             <div class="relative">
                 <p class="mt-3">Destinatario:</p><p>{{ form.receiver }}</p>
-                <img src="{% static 'images/agenda.png' %}" alt="Agenda" class="mt-3 h-5 w-5 top-2 right-2 cursor-pointer" onclick="showContactsDropdown()">
+                <p class="flex mt-3 font-bold">Mis contactos:<img src="{% static 'images/agenda.png' %}" alt="Agenda" class="mt-0.5 ml-1.5 h-5 w-5 top-2 right-2 cursor-pointer" onclick="showContactsDropdown()"></p>
                 <div id="contactsDropdown" class="hidden bg-slate-300 mt-1 p-2 shadow-md rounded-md">
                     {% for contact in contacts %}
                         <p class="px-2 rounded-lg cursor-pointer text-blue-800 hover:bg-slate-400" onclick="fillReceiver('{{ contact.num_contact }}')">{{ contact.contact }} - {{ contact.num_contact }}</p>

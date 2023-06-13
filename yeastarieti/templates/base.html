@@ -11,7 +11,7 @@
         <div class="flex justify-around">
             <div class="flex flex-col justify-center items-center">
                 <a href="/"><img src="{% static 'images/logo.png' %}" alt="Logo" class="w-[80px] h-[80px]"></a>
-                <h1 class="text-sky-800 font-bold">IETI Message Center</h1>
+                <h1 class="text-blue-800 font-bold">IETI Message Center</h1>
             </div>
             <img src="{% static 'images/cabecera_web.jpg' %}" alt="Cabecera" class="h-[170px] w-[1000px]">
             <div class="flex flex-col justify-center items-center font-bold">
@@ -35,7 +35,28 @@
     </main>
 
     <footer>
-        <p>Pie de página</p>
+        <div class="flex font-bold text-blue-800 mx-[5%] justify-around text-sm">
+            <div>
+                <p>Esteve Terradas i Illa - Codi: 08016781 - CIF: Q5855101A</p>
+                <p>C/ Bonavista, 70</p>
+                <p>08940 Cornellà de Llobregat</p>
+                <p>93 377 11 00 / a8016781@xtec.cat</p>
+                <a href="https://goo.gl/maps/QFgcXYauPtK2" class="flex"><img src="{% static 'images/location.png' %}" class="h-[25px] w-[25px]"></img>Mapa</a>
+            </div>
+            <div>
+                <img src="{% static 'images/ue_ieti.jpg' %}" class="h-[80%] w-[80%]">
+            </div>
+            <div class="text-xs">
+                <p>APP Created & Designed by: Pau Valls</p>
+                <p>API Designed & Developed by: Pau Valls</p>
+                <p>Contact: pvallsvilalta@gmail.com</p>
+            </div>
+        </div>
+        <div class="flex justify-center font-bold text-blue-800 text-sm">
+            <a href="http://web.gencat.cat/ca/menu-ajuda/ajuda/avis_legal/"><u>Aviso legal</u> |</a>
+            <a href="https://www.djangoproject.com/" class="ml-2"><u>Sobre la web</u> |</a>
+            <p class="ml-2">©2023 Generalitat de Catalunya </p>
+        </div>
     </footer>
 </body>
 </html>

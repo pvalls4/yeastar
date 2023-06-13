@@ -6,39 +6,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import *
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import views as auth_views
-
 from .models import *
 from .serializers import * 
-from rest_framework import viewsets
-from django.contrib.auth.models import Permission
-from rest_framework import permissions
-import os, mimetypes
 
 from urllib.parse import quote
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 
 from django.utils.crypto import get_random_string
-
-#class MyAuthForm(AuthenticationForm):
-#	error_messages = {
-#		'invalid_login': (
-#			"Asegurate de introducir el correo y la contraseña correctamente."
-#			" Ten en cuenta las máyusculas."
-#		),
-#		'inactive': ("El ususario no esta activo"),
-#	}
-
-#class LoginView(auth_views.LoginView):
-#	form_class = LoginForm
-#	authentication_form = MyAuthForm
-#	template_name = 'login.html'
         
 def login_view(request):
     if not request.user.is_authenticated:
@@ -50,7 +25,7 @@ def login_view(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('/')  # Cambia 'home' por la ruta a tu página principal
+                    return redirect('/')
         else:
             form = LoginForm()
         return render(request, 'login.html', {'form': form})
@@ -58,11 +33,10 @@ def login_view(request):
         return redirect('/')
     
 
-        
+# Create your views here.        
 def logout_view(request):
 	logout(request)
 	return redirect("/login")
-# Create your views here.
 
 @login_required
 def create_user(request):
@@ -79,7 +53,6 @@ def create_user(request):
 def dashboard(request):
     user = request.user
     contacts = Contact.objects.filter(user=user)
-    remain_sms = user.max_sms - user.current_sms
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid() and (user.current_sms < user.max_sms):
@@ -105,6 +78,7 @@ def dashboard(request):
                     user = request.user
                     user.current_sms += 1
                     user.save()
+                    remain_sms = user.max_sms - user.current_sms
                     exists = contacts.filter(num_contact=receiver).exists()
                     contact_saved = None
                     if exists:
@@ -120,10 +94,11 @@ def dashboard(request):
                 else:
                     raise Http404
             except requests.exceptions.RequestException as e:
-                error_message = f"Error de conexión: {str(e)}"
+                #error_message = f"Error de conexión: {str(e)}"
                 return redirect('message_failure.html')
     else: 
         form = MessageForm()
+        remain_sms = user.max_sms - user.current_sms
         content = {
             'user': user,
             'remain_sms' : remain_sms,
@@ -195,7 +170,7 @@ def add_contact(request):
             contact = form.save(commit=False)
             contact.user = request.user
             contact.save()
-            return redirect('/')  # Redirige a la lista de contactos o a otra URL deseada
+            return redirect('/')  # Redirige a la página principal
     else:
         form = AddContactForm()
     
@@ -203,10 +178,14 @@ def add_contact(request):
 
 @login_required   
 def contacts(request):
-    contacts=Contact.objects.filter(user=request.user)
+    contacts=Contact.objects.filter(user=request.user).order_by('contact')
     print(contacts)
     content = {
         'contacts': contacts
     }
-    
     return render(request, 'contacts.html', content)
+
+def delete_contact(request, contact_id):
+    contact = Contact.objects.get(pk=contact_id)
+    contact.delete()
+    return redirect('contacts')

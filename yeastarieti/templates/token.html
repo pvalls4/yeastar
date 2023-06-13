@@ -20,50 +20,8 @@
         {% include 'admin_panel.html' %}
     </div>
     <script>
-        function tokenReveal() {
-            var parrafo = document.getElementById("token");
-            parrafo.textContent = "{{ user.api_token }}";
-            parrafo.onclick = function() {tokenHide();}
-        }
-        function tokenHide() {
-            var parrafo = document.getElementById("token");
-            parrafo.textContent = "Pulsa para desvelar el token";
-            parrafo.onclick = function() {tokenReveal();}
-        }
-
-        document.getElementById("copy-button").addEventListener("click", function() {
-          // Obtener el token actual
-          var token = "{{ user.api_token }}";
-    
-          // Crear un elemento de texto temporal
-          var tempInput = document.createElement("input");
-          tempInput.type = "text";
-          tempInput.value = token;
-          document.body.appendChild(tempInput);
-    
-          // Seleccionar el texto del input temporal
-          tempInput.select();
-          tempInput.setSelectionRange(0, 99999); // Para dispositivos móviles
-    
-          // Copiar el texto al portapapeles
-          document.execCommand("copy");
-    
-          // Eliminar el input temporal
-          document.body.removeChild(tempInput);
-    
-          // Mostrar una notificación o mensaje de éxito
-          var originalImage = this.querySelector("img").src;
-            var tickImage = "{% static 'images/tick.png' %}";
-            this.querySelector("img").src = tickImage;
-            this.querySelector("img").alt = "Copiado";
-            this.title = "Copiado en el portapapeles";
-
-            setTimeout(function() {
-                // Restaurar la imagen original después de 2 segundos
-                this.querySelector("img").src = originalImage;
-                this.querySelector("img").alt = "Copiar";
-                this.title = "Copiar en el portapapeles";
-            }.bind(this), 1500);
-        });
-      </script>
+        var token = "{{ user.api_token }}";
+        var tickImage = "{% static 'images/tick.png' %}";
+    </script>
+    <script src="{% static 'scripts/token.js' %}"></script>
 {% endblock %}

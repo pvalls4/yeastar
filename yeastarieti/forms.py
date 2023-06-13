@@ -1,40 +1,23 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from django.forms import Widget
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from .models import *
-# from .models import CustomUser
-
-# class CustomUserCreationForm(UserCreationForm):
-
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'email')
-
-# class CustomUserChangeForm(UserChangeForm):
-
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'email')
         
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'mx-1 my-3 p-0.5 px-1 text-blue-800 rounded-md'}))
     password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'mx-1 p-0.5 px-1 text-blue-800 rounded-md'}))
-# myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
 
 class MessageForm(forms.ModelForm):
     text = forms.CharField(widget=forms.TextInput(attrs={'class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe tu SMS aquí...'}))
     receiver = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'number','class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe el número destino.'}))
 
-
-#validators=[MinLengthValidator(9), MaxLengthValidator(9)]
     class Meta:
         model = Message
         fields = ['text', 'receiver']
 
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField(label="E-Mail", max_length=254, widget=forms.EmailInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Correo electrónico', 'title': 'Ingrese una dirección de correo válida.'}))
-    phone = forms.IntegerField(label="Teléfono",validators=[MinLengthValidator(9), MaxLengthValidator(9)],  widget=forms.TextInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Teléfono', 'title': 'Ingrese su número de teléfono.'}))
+    phone = forms.IntegerField(label="Teléfono",  widget=forms.TextInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Teléfono', 'title': 'Ingrese su número de teléfono.'}))
     department = forms.CharField(label="Departamento", max_length=100,  widget=forms.TextInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Departamento', 'title': 'Ingrese el departamento al que pertenece.'}))
     max_sms = forms.IntegerField(label="Número máximo de SMS/día",  widget=forms.TextInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'SMS máximos', 'title': 'Ingrese el número máximo de mensajes que puede enviar al día.'}))
 
@@ -64,7 +47,7 @@ class CreateUserForm(UserCreationForm):
 
 class AddContactForm(forms.ModelForm):
     contact = forms.CharField(label='Nombre del contacto:', widget=forms.TextInput(attrs={'class': 'mx-1 my-3 p-0.5 px-1 text-blue-800 rounded-md'}))
-    num_contact = forms.CharField(label='Número de teléfono', widget=forms.TextInput(attrs={'type': 'password', 'class': 'mx-1 p-0.5 px-1 text-blue-800 rounded-md'}))
+    num_contact = forms.CharField(label='Número de teléfono', widget=forms.TextInput(attrs={'type': 'number', 'class': 'mx-1 p-0.5 px-1 text-blue-800 rounded-md'}))
 
     class Meta:
         model = Contact

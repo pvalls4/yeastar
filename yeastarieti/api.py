@@ -4,9 +4,6 @@ from rest_framework.authtoken.models import Token
 from .models import *
 from django.http import JsonResponse
 from django.contrib.auth.hashers import check_password
-from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-import random 
-import datetime
 
 def verifyToken(token):
     verifica = False

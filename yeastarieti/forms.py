@@ -18,22 +18,19 @@ from .models import *
 #         fields = ('username', 'email')
         
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'm-3 p-0.5 px-1 text-blue-800 rounded-md'}))
-    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'p-0.5 px-1 text-blue-800 rounded-md'}))
+    username = forms.CharField(label='Usuario', widget=forms.TextInput(attrs={'class': 'mx-1 my-3 p-0.5 px-1 text-blue-800 rounded-md'}))
+    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'type': 'password', 'class': 'mx-1 p-0.5 px-1 text-blue-800 rounded-md'}))
 # myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))
 
 class MessageForm(forms.ModelForm):
     text = forms.CharField(widget=forms.TextInput(attrs={'class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe tu SMS aquí...'}))
     receiver = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'number','class': 'p-0.5 px-1 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Escribe el número destino.'}))
-    contact = forms.ModelChoiceField(label="Contacto", queryset=None, widget=forms.HiddenInput())
+
+
 #validators=[MinLengthValidator(9), MaxLengthValidator(9)]
     class Meta:
         model = Message
-        fields = ['text', 'receiver', 'contact']
-
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['contact'].queryset = Contact.objects.filter(user=user)
+        fields = ['text', 'receiver']
 
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField(label="E-Mail", max_length=254, widget=forms.EmailInput(attrs={'class': 'm-2 p-0.5 px-1.5 text-blue-800 rounded-md placeholder:font-italic', 'placeholder':'Correo electrónico', 'title': 'Ingrese una dirección de correo válida.'}))
@@ -64,5 +61,13 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', 'phone', 'department', 'max_sms')
+
+class AddContactForm(forms.ModelForm):
+    contact = forms.CharField(label='Nombre del contacto:', widget=forms.TextInput(attrs={'class': 'mx-1 my-3 p-0.5 px-1 text-blue-800 rounded-md'}))
+    num_contact = forms.CharField(label='Número de teléfono', widget=forms.TextInput(attrs={'type': 'password', 'class': 'mx-1 p-0.5 px-1 text-blue-800 rounded-md'}))
+
+    class Meta:
+        model = Contact
+        fields = ['contact', 'num_contact']
 
 

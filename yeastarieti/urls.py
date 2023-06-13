@@ -9,6 +9,8 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('login/', views.login_view, name='login'),
     path('token/', views.token, name='token'),
+    path('add_contact/', views.add_contact, name='add_contact'),
+    path('contacts/', views.contacts, name='contacts'),
     path('message_success/', views.message_success, name='message_success'),
     path('createuser/', views.create_user, name='create_user'),
     path('api/login/',api.login),

@@ -1,11 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="flex justify-around">
+    {% include 'sites.html' %}
 
-    <h2>MENSAJE ENVIADO CORRECTAMENTE</h2>
-    <p>Bienvenido, {{user}}, te quedan {{ remain_sms }} de un total de {{ user.max_sms }} mensajes por mandar el día de hoy.</p>
+    <div class="justify-center">
+        <H2 class="font-bold text-xl mt-4">IETI Message Center:</H2>
+        <p>El mensaje se ha enviado correctamente. A continuación, te mostramos los detalles:</p>
+        <p>- Te quedan <b>{{ remain_sms }}</b> de un total de <b>{{ user.max_sms }}</b> mensajes por mandar el día de hoy.</p>
+        {% if contact_saved != None %}
+            <p><b>- Destinatario:</b> {{ message.receiver }} ({{ contact_saved}}).</p>
+        {% else %}
+        <p><b>- Destinatario:</b> {{ message.receiver }}</p>
+        {% endif %}
+        <p><b>- Mensaje:</b> {{ message.text }}</p>
+        <p><b>- Fecha de envío:</b> {{ message.send_date }}</p>
 
-    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/'">Volver al dashboard</button>
-    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/sendsms'">Enviar otro mensaje</button>
-    <button class="rounded-lg p-2 bg-[#461f87] text-[#ededed]" onclick="location.href='/logout'">Cerrar sesión</button>
+        <button  class=" font-bold rounded-lg p-0.5 px-1 bg-white text-blue-800 mt-3 mb-10 hover:bg-slate-200" onclick="location.href='/'">Volver al dashboard</button>
+    </div>
+
+    {% include 'admin_panel.html' %}
+</div>
 {% endblock %}

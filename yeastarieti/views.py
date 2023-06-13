@@ -61,7 +61,7 @@ def login_view(request):
         
 def logout_view(request):
 	logout(request)
-	return render(request, "logout.html")
+	return redirect("/login")
 # Create your views here.
 
 @login_required
@@ -77,19 +77,11 @@ def create_user(request):
 
 @login_required
 def dashboard(request):
-    user = User.objects.get(pk=request.user.pk)
+    user = request.user
     contacts = Contact.objects.filter(user=user)
-
-    form = MessageForm(user=user)
     remain_sms = user.max_sms - user.current_sms
-    content = {
-        'user': user,
-        'remain_sms' : remain_sms,
-        'contacts': contacts,
-        'form' : form
-    }
     if request.method == 'POST':
-        form = MessageForm(user=request.user, data=request.POST)
+        form = MessageForm(request.POST)
         if form.is_valid() and (user.current_sms < user.max_sms):
             try: 
                 # Obtener los datos del formulario
@@ -101,7 +93,6 @@ def dashboard(request):
 
                 # Construir la URL de la API de Yeastar con los datos del formulario
                 api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password=Projectieti23&port=1&destination=34{receiver}&content={encoded_text}"
-
                 # Enviar la solicitud a la API de Yeastar
                 response = requests.get(api_url)
                 if response.status_code == 200:
@@ -114,19 +105,25 @@ def dashboard(request):
                     user = request.user
                     user.current_sms += 1
                     user.save()
-                    print("Testing")
-                    print(response)
-
+                    exists = contacts.filter(num_contact=receiver).exists()
+                    contact_saved = None
+                    if exists:
+                        contact_saved = contacts.get(num_contact=receiver).contact
                     #Redirecciona a la página de éxito después de enviar el formulario
-                    return redirect('message_success')
+                    content2 = {
+                        'user': user,
+                        'message': message,
+                        'contact_saved': contact_saved,
+                        'remain_sms': remain_sms
+                    }
+                    return render(request, 'message_success.html', content2)
                 else:
                     raise Http404
             except requests.exceptions.RequestException as e:
                 error_message = f"Error de conexión: {str(e)}"
                 return redirect('message_failure.html')
-    else:
-        form = MessageForm(user=user)
-        remain_sms = user.max_sms - user.current_sms
+    else: 
+        form = MessageForm()
         content = {
             'user': user,
             'remain_sms' : remain_sms,
@@ -137,35 +134,32 @@ def dashboard(request):
 
 def api_sendsms(request):
     username = request.GET.get('username')
-    api_token = request.GET.get('token')
+    api_token = request.GET.get('api_token')
     text = request.GET.get('text')
-    receiver = request.GET.get('receiver')
-
     # Codificar el texto en URL Encode
     encoded_text = quote(text)
+    receiver = request.GET.get('receiver')
+    user = User.objects.get(username=username)
+    if api_token == user.api_token:
+        # Verificar si user.current_sms es menor que user.max_sms
+        if user.current_sms >= user.max_sms:
+            return HttpResponse('Límite de SMS alcanzado', status=403)
 
-    # Verificar si el usuario y la contraseña son válidos
-    user = authenticate(username=username, api_token=api_token)
-    if user is None:
+        #Guardamos el registro en la tabla Message
+        message = Message(sender=user, text=text, receiver=receiver)
+        message.save()
+
+        # Actualizar el contador de mensajes enviados por el usuario
+        user.current_sms += 1
+        user.save()
+        api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password=Projectieti23&port=1&destination=34{receiver}&content={encoded_text}"
+
+        # Realizar la solicitud a la API de Yeastar
+        response = requests.get(api_url)
+        remain_sms = user.max_sms - user.current_sms
+        return HttpResponse(f'Mensaje enviado a la API de Yeastar. Te quedan {remain_sms} mensajes por mandar hoy.')
+    else:
         return HttpResponse('Credenciales inválidas', status=401)
-
-    # Verificar si user.current_sms es menor que user.max_sms
-    if user.current_sms >= user.max_sms:
-        return HttpResponse('Límite de SMS alcanzado', status=403)
-
-    #Guardamos el registro en la tabla Message
-    message = Message(sender=user, text=text, receiver=receiver)
-    message.save()
-
-    # Actualizar el contador de mensajes enviados por el usuario
-    user.current_sms += 1
-    user.save()
-    api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password=Projectieti23&port=1&destination=34{receiver}&content={encoded_text}"
-
-    # Realizar la solicitud a la API de Yeastar
-    response = requests.get(api_url)
-    remain_sms = user.max_sms - user.current_sms
-    return HttpResponse(f'Mensaje enviado a la API de Yeastar. Te quedan {remain_sms} mensajes por mandar hoy.')
 
 @login_required
 def message_success(request):
@@ -192,3 +186,27 @@ def token(request):
         return redirect('/token')  # Redirecciona a la página de opciones de token
     else:
         return render(request, 'token.html', content)
+
+@login_required   
+def add_contact(request):
+    if request.method == 'POST':
+        form = AddContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.user = request.user
+            contact.save()
+            return redirect('/')  # Redirige a la lista de contactos o a otra URL deseada
+    else:
+        form = AddContactForm()
+    
+    return render(request, 'add_contact.html', {'form': form})
+
+@login_required   
+def contacts(request):
+    contacts=Contact.objects.filter(user=request.user)
+    print(contacts)
+    content = {
+        'contacts': contacts
+    }
+    
+    return render(request, 'contacts.html', content)

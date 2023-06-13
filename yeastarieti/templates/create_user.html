@@ -9,10 +9,10 @@
         <form class="font-bold" method="POST" action="">
             {% csrf_token %}
             {{ form.as_p }}
-            <button  class=" font-bold rounded-lg p-0.5 px-1 bg-white text-blue-800 mt-3 mb-10" type="submit">Crear usuario</button>
+            <button  class=" font-bold rounded-lg p-0.5 px-1.5 bg-white text-blue-800 mt-3 mb-5 hover:bg-slate-200" type="submit">Crear usuario</button>
         </form>
 
-        <button  class=" font-bold rounded-lg p-0.5 px-1 bg-white text-blue-800 mt-3 mb-10" onclick="location.href='/'">Volver al dashboard</button>
+        <button  class=" font-bold rounded-lg p-0.5 px-1.5 bg-white text-blue-800 mt-1 mb-10 hover:bg-slate-200" onclick="location.href='/'">Volver a la página principal</button>
     </div>
 
     {% include 'admin_panel.html' %}

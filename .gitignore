@@ -3,7 +3,7 @@
 /venv/
 /static/*
 /media/*
-.env
+/yeastar/.env
 db.sqlite3
 .coverage
 __pycache__

@@ -98,7 +98,7 @@ def dashboard(request):
                     raise Http404
             except requests.exceptions.RequestException as e:
                 #error_message = f"Error de conexión: {str(e)}"
-                return redirect('message_failure.html')
+                return render(request, 'message_failure.html')
     else: 
         form = MessageForm()
         remain_sms = user.max_sms - user.current_sms

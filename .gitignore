@@ -2,6 +2,7 @@
 /env/
 /static/*
 /media/*
+db.sqlite3
 /yeastar/.env
 .coverage
 __pycache__

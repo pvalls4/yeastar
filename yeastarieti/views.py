@@ -16,7 +16,9 @@ from django.contrib.auth import authenticate
 
 from django.utils.crypto import get_random_string
 
+api_account = os.environ.get('API_ACCOUNT')
 api_password = os.environ.get('API_PASSWORD')
+yestar_ip = os.environ.get('YEASTAR_IP')
         
 def login_view(request):
     if not request.user.is_authenticated:
@@ -68,7 +70,7 @@ def dashboard(request):
                 encoded_text = quote(text)
 
                 # Construir la URL de la API de Yeastar con los datos del formulario
-                api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password={api_password}&port=1&destination=34{receiver}&content={encoded_text}"
+                api_url = f"http://{yeastar_ip}/cgi/WebCGI?1500101=account={api_account}&password={api_password}&port=1&destination=34{receiver}&content={encoded_text}"
                 # Enviar la solicitud a la API de Yeastar
                 response = requests.get(api_url)
                 if response.status_code == 200:
@@ -130,7 +132,7 @@ def api_sendsms(request):
         # Actualizar el contador de mensajes enviados por el usuario
         user.current_sms += 1
         user.save()
-        api_url = f"http://192.168.5.150/cgi/WebCGI?1500101=account=ietiyeastar&password={api_password}&port=1&destination=34{receiver}&content={encoded_text}"
+        api_url = f"http://{yeastar_ip}/cgi/WebCGI?1500101=account={api_account}&password={api_password}&port=1&destination=34{receiver}&content={encoded_text}"
 
         # Realizar la solicitud a la API de Yeastar
         response = requests.get(api_url)

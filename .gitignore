@@ -1,5 +1,6 @@
 *.pyc
 /env/
+.env
 /static/*
 /media/*
 db.sqlite3
